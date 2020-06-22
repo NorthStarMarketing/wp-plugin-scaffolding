@@ -1,0 +1,20 @@
+version: "3.8"
+
+services:
+  wordpress_phpunit:
+    image: "chriszarate/wordpress-phpunit:latest"
+    volumes:
+      - ".:/app"
+      - "testsuite:/tmp"
+  mysql_phpunit:
+    image: "mysql:5.7"
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: "wordpress_test"
+      MYSQL_ROOT_PASSWORD: ""
+
+volumes:
+    phpunit_data:
+        driver: "local"
+    testsuite:
+        driver: "local"

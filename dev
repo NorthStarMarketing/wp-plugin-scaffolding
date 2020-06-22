@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+CONTAINER="${PWD##*/}_wordpress_1"
+
+if [ $# -gt 0 ]; then
+	if [ "$1" == "start" ]; then
+		docker-compose -f docker-compose.yml -f docker-compose.phpunit.yml up -d
+	elif [ "$1" == "stop" ]; then
+		shift 1
+		docker-compose -f docker-compose.yml -f docker-compose.phpunit.yml down "$@"
+	elif [ "$1" == "wp" ]; then
+		shift 1
+		docker run -it --rm \
+			--volumes-from $CONTAINER \
+			--network container:$CONTAINER \
+			wordpress:cli "$@"
+	elif [ "$1" == "install-tests" ]; then
+		shift 1
+		docker-compose -f docker-compose.phpunit.yml \
+			run --rm wordpress_phpunit /app/bin/install-wp-tests.sh wordpress_test root '' mysql_phpunit latest true
+	elif [ "$1" == "test" ]; then
+		shift 1
+		docker-compose -f docker-compose.phpunit.yml \
+			run --rm wordpress_phpunit phpunit --colors=always "$@"
+	fi
+else
+	docker-compose ps
+fi

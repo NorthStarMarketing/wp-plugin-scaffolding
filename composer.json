@@ -1,0 +1,19 @@
+{
+    "name": "nsm/plugin",
+    "type": "project",
+    "authors": [
+        {
+            "name": "North Star Marketing",
+            "email": "tech@northstarmarketing.com"
+        }
+	],
+	"require": {
+    },
+	"autoload": {
+        "psr-4": {
+			"NSM\\Plugin\\": "core"
+        }
+    },
+    "require-dev": {
+    }
+}
